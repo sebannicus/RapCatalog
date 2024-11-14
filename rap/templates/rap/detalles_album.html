@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>Detalles del Álbum</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Título del álbum y artista -->
+        <h1 class="text-center">{{ album.nombre }} - {{ artista.nombre }}</h1>
+
+        <!-- Formulario de búsqueda de canciones -->
+        <form method="GET" action="{% url 'detalles_album' artista.slug album.slug %}" class="mb-4">
+            <input type="text" name="q" class="form-control" placeholder="Buscar canción..." value="{{ request.GET.q }}">
+        </form>
+
+        <!-- Botón para agregar una nueva canción, visible solo para superusuarios -->
+        {% if user.is_authenticated and user.is_superuser %}
+            <div class="d-flex justify-content-end mb-4">
+                <a href="{% url 'agregar_cancion' artista.slug album.slug %}" class="btn btn-success">Agregar Canción</a>
+            </div>
+        {% endif %}
+
+        <!-- Lista de canciones -->
+        <h2>Canciones</h2>
+        <ul class="list-group mt-3">
+            {% for cancion in canciones %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ cancion.nombre }}</span>
+                    <!-- Botones Modificar y Eliminar, visibles solo para superusuarios -->
+                    {% if user.is_authenticated and user.is_superuser %}
+                        <span>
+                            <a href="{% url 'editar_cancion' artista.slug album.slug cancion.id %}" class="btn btn-warning btn-sm me-2">Modificar</a>
+                            <a href="{% url 'eliminar_cancion' artista.slug album.slug cancion.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </span>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li class="list-group-item">No hay canciones disponibles.</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Botón para volver a la lista de álbumes del artista -->
+        <a href="{% url 'detalles_artista' artista.slug %}" class="btn btn-primary mt-3">Volver a detalles del artista</a>
+    </div>
+
+    <!-- Archivos JavaScript necesarios para Bootstrap -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <div class="container">
+            <p class="mb-0">© 2024 SEBA MORALES. BACKEND CLASS.</p>
+            <p>Desarrollado con amor para todos los amantes del rap.</p>
+        </div>
+    </footer>
+</body>
+</html>
