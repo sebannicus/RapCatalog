@@ -6,16 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <title>Lista de Artistas</title>
+    <style>
+        .banner {
+            background-color: #212529; /* Fondo oscuro */
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .banner h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .banner p {
+            font-size: 1.2rem;
+            margin: 0 auto;
+            max-width: 700px;
+        }
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .card-title {
+            font-weight: bold;
+            text-align: center;
+        }
+        footer {
+            background-color: #212529; /* Fondo oscuro */
+        }
+    </style>
 </head>
 <body>
-
     <!-- Banner -->
-    <div class="banner text-center text-white py-5">
+    <div class="banner">
         <h1>EL RAP</h1>
         <p>Desde muy chico me gusta el RAP, por su estilo, su flow y sus letras... A continuación algunos de los que estoy escuchando mucho.</p>
     </div>
 
-    <div class="container mt-5">
+    <div class="container">
         <!-- Formulario de búsqueda -->
         <form method="GET" action="{% url 'lista_artistas' %}" class="mb-4">
             <input type="text" name="q" class="form-control" placeholder="Buscar artista..." value="{{ request.GET.q }}">
@@ -29,61 +58,40 @@
         {% endif %}
 
         <!-- Lista de artistas -->
-        <div class="row mt-4">
+        <div class="row">
             {% for artista in artistas %}
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-4">
                     <div class="card">
                         <img src="{{ artista.imagen.url }}" class="card-img-top" alt="{{ artista.nombre }}" style="height: 200px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title">{{ artista.nombre }}</h5>
-
-                            <!-- Botones de Modificar, Eliminar y Ver Discos para cada artista -->
                             <div class="mt-3 d-flex justify-content-between">
                                 {% if user.is_authenticated and user.is_superuser %}
-                                    <a href="{% url 'editar_artista' artista.id %}" class="btn btn-warning">Modificar</a>
-                                    <a href="{% url 'eliminar_artista' artista.id %}" class="btn btn-danger">Eliminar</a>
+                                    <a href="{% url 'editar_artista' artista.id %}" class="btn btn-warning btn-sm">Modificar</a>
+                                    <a href="{% url 'eliminar_artista' artista.id %}" class="btn btn-danger btn-sm">Eliminar</a>
                                 {% endif %}
-                                <a href="{% url 'detalles_artista' artista.slug %}" class="btn btn-primary">Conoce mis discos</a>
+                                <a href="{% url 'detalles_artista' artista.slug %}" class="btn btn-primary btn-sm">Ver Detalles</a>
                             </div>
                         </div>
                     </div>
                 </div>
             {% empty %}
                 <div class="col-12">
-                    <div class="alert alert-warning">No hay artistas disponibles.</div>
+                    <div class="alert alert-warning text-center">No hay artistas disponibles.</div>
                 </div>
             {% endfor %}
         </div>
     </div>
 
-    <!-- Archivos JavaScript necesarios para Bootstrap -->
+    <!-- Archivos JavaScript -->
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    
+
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3 mt-4">
+    <footer class="text-white text-center py-3">
         <div class="container">
             <p class="mb-0">© 2024 SEBA MORALES. BACKEND CLASS.</p>
             <p>Desarrollado con amor para todos los amantes del rap.</p>
         </div>
     </footer>
-
-    <!-- Estilos del Banner -->
-    <style>
-        .banner {
-            background-color: #343a40; /* Fondo oscuro */
-            color: white;
-            padding: 40px 0;
-            margin-bottom: 20px;
-        }
-        .banner h1 {
-            font-size: 3em;
-            font-weight: bold;
-        }
-        .banner p {
-            font-size: 1.2em;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-    </style>
 </body>
 </html>

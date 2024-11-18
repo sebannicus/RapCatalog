@@ -155,3 +155,9 @@ def eliminar_cancion(request, slug, album_slug, cancion_id):
         cancion.delete()
         return redirect('detalles_album', slug=artista.slug, album_slug=album.slug)
     return render(request, 'rap/eliminar_cancion.html', {'artista': artista, 'album': album, 'cancion': cancion})
+
+def pagina_inicial(request):
+    """
+    Página inicial con opciones para visitantes y administradores.
+    """
+    return render(request, 'rap/pagina_inicial.html')

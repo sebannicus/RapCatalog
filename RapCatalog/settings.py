@@ -129,4 +129,7 @@ MEDIA_URL = '/media/'  # URL pública para acceder a archivos de medios
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Carpeta donde se guardarán los archivos de medios
 
 # En settings.py
-LOGIN_URL = '/admin/login/'  # O la URL de tu página de inicio de sesión personalizada
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/rap/'
+LOGOUT_REDIRECT_URL = '/'
+
